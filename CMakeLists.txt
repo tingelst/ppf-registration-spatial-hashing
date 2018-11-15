@@ -1,20 +1,17 @@
-# include(/opt/pcl/src/pcl/cmake/pcl_utils.cmake)
-
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 # SET(CMAKE_BUILD_TYPE Release)
 
 project(alignment)
 
-# set(PCL_DIR "/opt/pcl/src/pcl/build")
 find_package(PCL 1.7 REQUIRED)
 
 add_definitions(-DBOOST_ALL_DYN_LINK)
 find_package(Boost REQUIRED COMPONENTS program_options log)
 
 set(CMAKE_MODULE_PATH "/opt/pcl/src/pcl/cmake/Modules/" ${CMAKE_MODULE_PATH})
-find_package(Eigen REQUIRED)
-# find_package(Eigen3 REQUIRED)
+
+find_package(Eigen3 REQUIRED)
 
 #cuda info:
 # http://stackoverflow.com/questions/13073717/building-cuda-object-files-using-cmake
@@ -24,7 +21,6 @@ find_package(CUDA 5.0 REQUIRED)
 set(CUDA_SEPARABLE_COMPILATION ON)
 set(BUILD_SHARED_LIBS OFF)
 # set(CUDA_VERBOSE_BUILD ON)
-
 
 FILE(GLOB srcs src/*.cpp)
 FILE(GLOB cuda src/cuda/*.cu)
@@ -61,7 +57,7 @@ foreach(d ${vtk_flags})
     remove_definitions(-D${d})
 endforeach()
 
-# list(APPEND CUDA_LIBRARIES -lcudadevrt)
+list(APPEND CUDA_LIBRARIES -lcudadevrt)
 set(CUDA_HOST_COMPILER "/usr/bin/g++-5")
 set(CMAKE_CXX_COMPILER "/usr/bin/g++-5")
 
@@ -86,5 +82,5 @@ CUDA_ADD_LIBRARY(alignment_lib ${cuda} ${srcs})
 add_executable (alignment src/alignment.cpp)
 # set_property(TARGET alignment PROPERTY CXX_STANDARD 11)
 
-target_link_libraries (alignment alignment_lib ${Boost_LIBRARIES} ${PCL_LIBRARIES} ${CUDA_LIBRARIES} ${CUDADEVRT})
+target_link_libraries (alignment alignment_lib ${Boost_LIBRARIES} ${PCL_LIBRARIES} ${CUDA_LIBRARIES} -lcudadevrt)
 # target_link_libraries (test test_lib ${PCL_LIBRARIES} ${CUDA_LIBRARIES} ${CUDADEVRT})

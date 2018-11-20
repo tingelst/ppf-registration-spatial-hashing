@@ -1,1 +1,7 @@
 build
+
+*.so
+
+.ipynb_checkpoints
+
+*.egg-info

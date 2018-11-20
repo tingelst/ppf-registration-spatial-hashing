@@ -10,7 +10,6 @@
 #include <pcl/filters/random_sample.h>
 #include <pcl/filters/uniform_sampling.h>
 #include <pcl/filters/voxel_grid.h>
-#include <pcl/io/ply_io.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <vector_types.h>
@@ -25,48 +24,54 @@
 
 // Workaround for a bug in pcl::geometry::distance.
 template <typename PointT>
-inline float distance(const PointT &p1, const PointT &p2) {
-  Eigen::Vector3f diff = p1.getVector3fMap() - p2.getVector3fMap();
-  return (diff.norm());
+inline float distance(const PointT &p1, const PointT &p2)
+{
+    Eigen::Vector3f diff = p1.getVector3fMap() - p2.getVector3fMap();
+    return (diff.norm());
 }
 
 template <typename Point>
 typename pcl::PointCloud<Point>::Ptr
-randomDownsample(typename pcl::PointCloud<Point>::Ptr cloud, float p) {
-  pcl::RandomSample<Point> rs;
-  typename pcl::PointCloud<Point>::Ptr filtered_cloud(
-      new pcl::PointCloud<Point>);
-  rs.setSample(p * cloud->size());
-  rs.setInputCloud(cloud);
-  rs.filter(*filtered_cloud);
-  return filtered_cloud;
+randomDownsample(typename pcl::PointCloud<Point>::Ptr cloud, float p)
+{
+    pcl::RandomSample<Point> rs;
+    typename pcl::PointCloud<Point>::Ptr filtered_cloud(
+        new pcl::PointCloud<Point>);
+    rs.setSample(p * cloud->size());
+    rs.setInputCloud(cloud);
+    rs.filter(*filtered_cloud);
+    return filtered_cloud;
 }
 
 template <typename Point>
 typename pcl::PointCloud<Point>::Ptr
-sequentialDownsample(typename pcl::PointCloud<Point>::Ptr cloud, int n) {
-  typename pcl::PointCloud<Point>::Ptr filtered_cloud(
-      new pcl::PointCloud<Point>);
-  int i = 0;
-  for (typename pcl::PointCloud<Point>::iterator it = cloud->begin();
-       it != cloud->end(); ++it, ++i) {
-    if (i % n == 0) {
-      filtered_cloud->push_back(*it);
+sequentialDownsample(typename pcl::PointCloud<Point>::Ptr cloud, int n)
+{
+    typename pcl::PointCloud<Point>::Ptr filtered_cloud(
+        new pcl::PointCloud<Point>);
+    int i = 0;
+    for (typename pcl::PointCloud<Point>::iterator it = cloud->begin();
+         it != cloud->end(); ++it, ++i)
+    {
+        if (i % n == 0)
+        {
+            filtered_cloud->push_back(*it);
+        }
     }
-  }
-  return filtered_cloud;
+    return filtered_cloud;
 }
 
 template <typename Point>
 typename pcl::PointCloud<Point>::Ptr
-voxelGridDownsample(typename pcl::PointCloud<Point>::Ptr cloud, float leaf) {
-  typename pcl::PointCloud<Point>::Ptr filtered_cloud(
-      new pcl::PointCloud<Point>);
-  pcl::VoxelGrid<Point> sor;
-  sor.setInputCloud(cloud);
-  sor.setLeafSize(leaf, leaf, leaf);
-  sor.filter(*filtered_cloud);
-  return filtered_cloud;
+voxelGridDownsample(typename pcl::PointCloud<Point>::Ptr cloud, float leaf)
+{
+    typename pcl::PointCloud<Point>::Ptr filtered_cloud(
+        new pcl::PointCloud<Point>);
+    pcl::VoxelGrid<Point> sor;
+    sor.setInputCloud(cloud);
+    sor.setLeafSize(leaf, leaf, leaf);
+    sor.filter(*filtered_cloud);
+    return filtered_cloud;
 }
 
 /*

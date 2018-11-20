@@ -56,7 +56,7 @@ RUN mkdir -p /tmp/pcl/build \
     -DBUILD_filters=ON\
     -DBUILD_geometry=OFF \
     -DBUILD_global_tests=OFF\
-    -DBUILD_io=OFF \
+    -DBUILD_io=ON \
     -DBUILD_kdtree=ON  \
     -DBUILD_keypoints=OFF \
     -DBUILD_ml=OFF \

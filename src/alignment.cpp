@@ -10,6 +10,7 @@
 #include <pcl/filters/random_sample.h>
 #include <pcl/filters/uniform_sampling.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/io/ply_io.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <vector_types.h>

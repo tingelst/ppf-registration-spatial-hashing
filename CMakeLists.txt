@@ -5,7 +5,7 @@ SET(CMAKE_BUILD_TYPE Release)
 
 project(alignment)
 
-find_package(PCL 1.7 REQUIRED)
+find_package(PCL 1.9 REQUIRED)
 find_package(Eigen REQUIRED)
 find_package(pybind11)
 
@@ -52,7 +52,6 @@ target_include_directories(alignment_lib PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${PCL_INCLUDE_DIRS} 
     ${CUDA_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/eigen
     )
 
 add_library (alignment SHARED src/alignment.cpp)
@@ -61,8 +60,14 @@ target_include_directories(alignment PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${PCL_INCLUDE_DIRS} 
     ${CUDA_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/eigen
     )
 target_link_libraries (alignment alignment_lib ${PCL_LIBRARIES} ${CUDA_LIBRARIES})
 
-pybind11_add_module(example alignment_py.cpp)
+pybind11_add_module(ppf_registration_spatial_hashing src/alignment_py.cpp)
+target_include_directories(ppf_registration_spatial_hashing PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${PCL_INCLUDE_DIRS} 
+    ${CUDA_INCLUDE_DIRS}
+    )
+target_link_libraries(ppf_registration_spatial_hashing PRIVATE ${PCL_LIBRARIES})

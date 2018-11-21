@@ -1,0 +1,16 @@
+{
+    "python.pythonPath": "/home/lars/bin/miniconda3/envs/tpk4170/bin/python",
+    "files.associations": {
+        "core": "cpp",
+        "superlusupport": "cpp",
+        "adolcforward": "cpp",
+        "alignedvector3": "cpp",
+        "autodiff": "cpp",
+        "bvh": "cpp",
+        "eulerangles": "cpp",
+        "fft": "cpp",
+        "kroneckerproduct": "cpp",
+        "numericaldiff": "cpp",
+        "specialfunctions": "cpp"
+    }
+}

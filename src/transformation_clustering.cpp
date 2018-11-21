@@ -59,22 +59,21 @@
 // }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-void clusterPoses(PoseWithVotesList &poses, PoseWithVotesList &result,
-                  float trans_thresh, float rot_thresh){
-  BOOST_LOG_TRIVIAL(info) << "Clustering poses ...";
+void
+clusterPoses (PoseWithVotesList &poses, PoseWithVotesList &result, float trans_thresh, float rot_thresh)
+{
+  BOOST_LOG_TRIVIAL (info) << "Clustering poses ...";
   // Start off by sorting the poses by the number of votes
-  sort(poses.begin(), poses.end(), poseWithVotesCompareFunction);
+  sort (poses.begin (), poses.end (), poseWithVotesCompareFunction);
   std::vector<PoseWithVotesList> clusters;
-  std::vector<std::pair<size_t, unsigned int> > cluster_votes;
-  for (size_t poses_i = 0; poses_i < poses.size(); ++ poses_i)
+  std::vector<std::pair<size_t, unsigned int>> cluster_votes;
+  for (size_t poses_i = 0; poses_i < poses.size (); ++poses_i)
   {
-    BOOST_LOG_TRIVIAL(info) <<
-      boost::format("pose, nclusters: %lu, %lu") % poses_i % clusters.size();
+    BOOST_LOG_TRIVIAL (info) << boost::format ("pose, nclusters: %lu, %lu") % poses_i % clusters.size ();
     bool found_cluster = false;
-    for (size_t clusters_i = 0; clusters_i < clusters.size(); ++ clusters_i)
+    for (size_t clusters_i = 0; clusters_i < clusters.size (); ++clusters_i)
     {
-        if(posesWithinErrorBounds(poses[poses_i].pose, clusters[clusters_i].front().pose,
-                                  trans_thresh, rot_thresh))
+      if (posesWithinErrorBounds (poses[poses_i].pose, clusters[clusters_i].front ().pose, trans_thresh, rot_thresh))
       {
         found_cluster = true;
         clusters[clusters_i].push_back (poses[poses_i]);
@@ -91,7 +90,7 @@ void clusterPoses(PoseWithVotesList &poses, PoseWithVotesList &result,
       clusters.push_back (new_cluster);
       cluster_votes.push_back (std::pair<size_t, unsigned int> (clusters.size () - 1, poses[poses_i].votes));
     }
- }
+  }
   // Sort clusters by total number of votes
   std::sort (cluster_votes.begin (), cluster_votes.end (), clusterVotesCompareFunction);
   // Compute pose average and put them in result vector
@@ -99,14 +98,14 @@ void clusterPoses(PoseWithVotesList &poses, PoseWithVotesList &result,
   /// now just taking the first three clusters
   result.clear ();
   size_t max_clusters = (clusters.size () < 3) ? clusters.size () : 3;
-  for (size_t cluster_i = 0; cluster_i < max_clusters; ++ cluster_i){
-    BOOST_LOG_TRIVIAL(info) <<
-      boost::format("Winning cluster has #votes: %d and #poses voted: %d.") %
-      cluster_votes[cluster_i].second %
-      clusters[cluster_votes[cluster_i].first].size();
+  for (size_t cluster_i = 0; cluster_i < max_clusters; ++cluster_i)
+  {
+    BOOST_LOG_TRIVIAL (info) << boost::format ("Winning cluster has #votes: %d and #poses voted: %d.") % cluster_votes[cluster_i].second
+                                  % clusters[cluster_votes[cluster_i].first].size ();
     Eigen::Vector3f translation_average (0.0, 0.0, 0.0);
     Eigen::Vector4f rotation_average (0.0, 0.0, 0.0, 0.0);
-    for (typename PoseWithVotesList::iterator v_it = clusters[cluster_votes[cluster_i].first].begin (); v_it != clusters[cluster_votes[cluster_i].first].end (); ++ v_it)
+    for (typename PoseWithVotesList::iterator v_it = clusters[cluster_votes[cluster_i].first].begin (); v_it != clusters[cluster_votes[cluster_i].first].end ();
+         ++v_it)
     {
       translation_average += v_it->pose.translation ();
       /// averaging rotations by just averaging the quaternions in 4D space - reference "On Averaging Rotations" by CLAUS GRAMKOW
@@ -117,34 +116,36 @@ void clusterPoses(PoseWithVotesList &poses, PoseWithVotesList &result,
 
     Eigen::Affine3f transform_average;
     transform_average.translation ().matrix () = translation_average;
-    transform_average.linear ().matrix () = Eigen::Quaternionf (rotation_average).normalized().toRotationMatrix ();
+    transform_average.linear ().matrix () = Eigen::Quaternionf (rotation_average).normalized ().toRotationMatrix ();
     result.push_back (PoseWithVotes (transform_average, cluster_votes[cluster_i].second));
   }
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool posesWithinErrorBounds(Eigen::Affine3f &pose1, Eigen::Affine3f &pose2,
-                            float trans_thresh, float rot_thresh){
-  float position_diff = (pose1.translation() - pose2.translation ()).norm();
-  Eigen::AngleAxisf rotation_diff_mat((pose1.rotation().inverse().lazyProduct (pose2.rotation()).eval()));
+bool
+posesWithinErrorBounds (Eigen::Affine3f &pose1, Eigen::Affine3f &pose2, float trans_thresh, float rot_thresh)
+{
+  float position_diff = (pose1.translation () - pose2.translation ()).norm ();
+  Eigen::AngleAxisf rotation_diff_mat ((pose1.rotation ().inverse ().lazyProduct (pose2.rotation ()).eval ()));
 
-  float rotation_diff_angle = fabsf (rotation_diff_mat.angle());
+  float rotation_diff_angle = fabsf (rotation_diff_mat.angle ());
 
   if (position_diff < trans_thresh && rotation_diff_angle < rot_thresh)
     return true;
-  else return false;
+  else
+    return false;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool poseWithVotesCompareFunction(const PoseWithVotes &a, const PoseWithVotes &b){
+bool
+poseWithVotesCompareFunction (const PoseWithVotes &a, const PoseWithVotes &b)
+{
   return (a.votes > b.votes);
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////
-bool clusterVotesCompareFunction(const std::pair<size_t, unsigned int> &a,
-                            const std::pair<size_t, unsigned int> &b){
+bool
+clusterVotesCompareFunction (const std::pair<size_t, unsigned int> &a, const std::pair<size_t, unsigned int> &b)
+{
   return (a.second > b.second);
 }

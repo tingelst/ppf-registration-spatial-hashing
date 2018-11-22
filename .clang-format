@@ -1,48 +1,66 @@
 ---
-Language: Cpp
-ColumnLimit: 120 
-
-# Namespaces
-# If multiple namespaces are declared within header files, always use 2 spaces to indent them
-CompactNamespaces: false
-NamespaceIndentation: All
-
-# Classes
-AlwaysBreakTemplateDeclarations: true # The template parameters of a class should be declared on a different line
-BreakConstructorInitializers:  AfterColon
-SpaceAfterTemplateKeyword: true
-SpacesInAngles: false
-
-# Functions/Methods
-AlignAfterOpenBracket: Align
-AlwaysBreakAfterReturnType: All # The return type of each function declaration must be placed on a different line
-BinPackArguments: true
-BinPackParameters: true
-IndentWrappedFunctionNames: false
-SpaceBeforeParens: Always
-SpaceInEmptyParentheses: false
-SpacesInParentheses: false
-
-# Braces
-# Braces, both open and close, go on their own lines
-AllowShortBlocksOnASingleLine: false
-AllowShortFunctionsOnASingleLine: None
+BasedOnStyle:  Google
+AccessModifierOffset: -2
+ConstructorInitializerIndentWidth: 2
+AlignEscapedNewlinesLeft: false
+AlignTrailingComments: true
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortIfStatementsOnASingleLine: false
-BreakBeforeBraces: Allman
-AllowShortCaseLabelsOnASingleLine: false
-
-# Spacing
-AccessModifierOffset: 0 # Access qualifiers (public, private and protected) are put at the indentation level of the class body
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakTemplateDeclarations: true
+AlwaysBreakBeforeMultilineStrings: false
+BreakBeforeBinaryOperators: false
+BreakBeforeTernaryOperators: false
+BreakConstructorInitializersBeforeComma: true
+BinPackParameters: true
+ColumnLimit:    120
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+DerivePointerBinding: false
+PointerBindsToType: true
+ExperimentalAutoDetectBinPacking: false
 IndentCaseLabels: true
-# The standard indentation for each block in PCL is 2 spaces
-ContinuationIndentWidth: 2
-IndentWidth: 2
-UseTab: Never
-
-# Miscellaneous
-BreakBeforeBinaryOperators: NonAssignment # When a long formula is broken across many lines, start each line with operator
-BreakBeforeTernaryOperators: true
 MaxEmptyLinesToKeep: 1
-SpaceBeforeAssignmentOperators: true
+NamespaceIndentation: None
+ObjCSpaceBeforeProtocolList: true
+PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakComment: 60
+PenaltyBreakString: 1
+PenaltyBreakFirstLessLess: 1000
+PenaltyExcessCharacter: 1000
+PenaltyReturnTypeOnItsOwnLine: 90
+SpacesBeforeTrailingComments: 2
+Cpp11BracedListStyle: false
+Standard:        Auto
+IndentWidth:     2
+TabWidth:        2
+UseTab:          Never
+IndentFunctionDeclarationAfterType: false
+SpacesInParentheses: false
+SpacesInAngles:  false
+SpaceInEmptyParentheses: false
 SpacesInCStyleCastParentheses: false
-SpacesInSquareBrackets: false
+SpaceAfterControlStatementKeyword: true
+SpaceBeforeAssignmentOperators: true
+ContinuationIndentWidth: 4
+SortIncludes: false
+SpaceAfterCStyleCast: false
+
+# Configure each individual brace in BraceWrapping
+BreakBeforeBraces: Custom
+
+# Control of individual brace wrapping cases
+BraceWrapping: {
+    AfterClass: 'true'
+    AfterControlStatement: 'true'
+    AfterEnum : 'true'
+    AfterFunction : 'true'
+    AfterNamespace : 'true'
+    AfterStruct : 'true'
+    AfterUnion : 'true'
+    BeforeCatch : 'true'
+    BeforeElse : 'true'
+    IndentBraces : 'false'
+}
+...

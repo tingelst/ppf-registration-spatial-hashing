@@ -46,16 +46,16 @@ RUN mkdir -p /tmp/pcl/build \
     -DWITH_PCAP=OFF \
     -DWITH_LIBUSB=OFF \
     -DWITH_OPENGL=OFF \
-    -DBUILD_2d=OFF \
+    -DBUILD_2d=ON \
     -DBUILD_CUDA=OFF \
     -DBUILD_GPU=OFF \
-    -DBUILD_apps=OFF\
+    -DBUILD_apps=OFF \
     -DBUILD_common=ON \
     -DBUILD_examples=OFF \
-    -DBUILD_features=OFF \
-    -DBUILD_filters=ON\
+    -DBUILD_features=ON \
+    -DBUILD_filters=ON \
     -DBUILD_geometry=OFF \
-    -DBUILD_global_tests=OFF\
+    -DBUILD_global_tests=OFF \
     -DBUILD_io=ON \
     -DBUILD_kdtree=ON  \
     -DBUILD_keypoints=OFF \
@@ -64,9 +64,9 @@ RUN mkdir -p /tmp/pcl/build \
     -DBUILD_outofcore=OFF \
     -DBUILD_people=OFF \
     -DBUILD_recognition=OFF \
-    -DBUILD_registration=OFF \
+    -DBUILD_registration=ON \
     -DBUILD_sample_consensus=ON \
-    -DBUILD_search=ON\
+    -DBUILD_search=ON \
     -DBUILD_segmentation=OFF \
     -DBUILD_simulation=OFF \
     -DBUILD_stereo=OFF \
@@ -75,7 +75,7 @@ RUN mkdir -p /tmp/pcl/build \
     -DBUILD_tracking=OFF \
     -DBUILD_visualization=OFF \
     .. \
-    && ninja \
+    && ninja -j32 \
     && ninja install
 
 # Install Miniconda3
